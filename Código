@@ -1,0 +1,57 @@
+%time
+#FINAL & ANIMACIÓN.
+def semaforus(poblacion,repeticiones):
+    Anim=[]
+    sumaparaponderar=0
+    totalponderado=0
+    media=0
+    intervalomuerte=random()*10.0
+    contadormuerte=0 
+    Lista=[randint(1, 10) for i in xsrange(poblacion)]
+    for unayotravez in range(repeticiones):       
+
+        for x in [0..poblacion-1]:
+            sumaparaponderar=sumaparaponderar+ 1.0/Lista[x]
+            media = media+Lista[x]
+        sumaparaponderar= 10.0/sumaparaponderar
+        
+        Listamuerte=[(sumaparaponderar/Lista[x]) for x in range(len(Lista))]
+        Listasupervivientes=[-1 for x in xrange(poblacion)]
+
+        contadorsupervivientes=0
+        for x in range(poblacion):
+            intervalomuerte=random()*10.0
+            if Listamuerte[x]<intervalomuerte:
+                Listasupervivientes[contadorsupervivientes]=Lista[x]
+                contadorsupervivientes +=1
+
+        Listanuevageneracion=[Listasupervivientes[x] for x in xrange(poblacion)]
+        
+        for x in [contadorsupervivientes-1..poblacion-1]:
+            redondeo=randint(0,1)
+            if redondeo==1:
+                Listanuevageneracion[x]=floor(0.5*(Listasupervivientes[randint(0,contadorsupervivientes-1)]
+                +Listasupervivientes[randint(0,contadorsupervivientes-1)]))
+            if redondeo ==0:
+                Listanuevageneracion[x]=ceil(0.5*(Listasupervivientes[randint(0,contadorsupervivientes-1)]
+                +Listasupervivientes[randint(0,contadorsupervivientes-1)]))
+        
+        Lista=[Listanuevageneracion[i] for i in range(poblacion)]
+        ListaPuntos=[(x,Listanuevageneracion[x]) for x in xsrange(poblacion)]
+        Anim.append(points(ListaPuntos))
+        
+        for x in [1..ceil(poblacion/100)]:
+            mutacion = randint(0, poblacion-1)
+            Lista[mutacion]+=1
+            mutacion2 = randint(0, poblacion-1)
+            while Lista[mutacion2]<=1:
+                if mutacion2+1<=poblacion:
+                    mutacion2+=1
+                if mutacion2+1>poblacion:
+                    mutacion2=1
+            Lista[mutacion2]-=1
+            
+    print sum(Listanuevageneracion) / poblacion.n()
+    a=animate(Anim)
+    a.show()
+semaforus(1000,1000)
